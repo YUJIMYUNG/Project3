@@ -11,7 +11,7 @@ import web.model.dto.UserDto;
 @Entity
 @Getter
 @Setter
-@Table(name = "category")
+@Table(name = "record_user")
 public class UserEntity extends BaseTime{
 
     @Id

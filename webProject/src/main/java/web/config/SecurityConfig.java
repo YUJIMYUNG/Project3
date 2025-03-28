@@ -95,9 +95,7 @@ public class SecurityConfig {
         });
 
         // 2. http 객체를 빌드/실행하여 보안 필터 체인을 생성
-        return null;
-
-        //return http.build();
+        return http.build();
     }
 
 

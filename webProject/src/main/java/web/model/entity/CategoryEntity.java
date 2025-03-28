@@ -11,7 +11,7 @@ import web.model.dto.CategoryDto;
 @Entity
 @Getter
 @Setter
-@Table(name = "category")
+@Table(name = "record_category")
 public class CategoryEntity extends BaseTime{
 
     @Id
