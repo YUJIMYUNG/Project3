@@ -130,4 +130,16 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
                 .build();
         return authDto;
     } // loeadUser o end
+
+
+    // 4. 이메일 중복 검사
+    public boolean checkedEmail(String email) {
+        return !userRepository.existsByEmail(email);
+    }
+
+    // 5. 닉네임 중복 검사
+    public boolean checkedNickname(String nickname) {
+        return !userRepository.existsByNickname(nickname);
+    }
+
 }

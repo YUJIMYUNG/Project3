@@ -23,7 +23,7 @@ public class UserDto {
     @NotNull
     private String email;
     @NotNull
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "비밀번호는 8~20 문자와 숫자, 특수문자를 이용하여 작성해주세요. ")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "비밀번호는 8~20 문자와 숫자, 특수문자를 이용하여 작성해주세요. ")
     private String password;
 
     private String signupdate;
