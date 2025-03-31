@@ -2,6 +2,7 @@ package web.model.dto;
 
 import lombok.*;
 import web.model.entity.CategoryEntity;
+import web.model.entity.UserEntity;
 
 @Builder
 @ToString
@@ -14,6 +15,8 @@ public class CategoryDto {
     private int cindex;
     private String name;
     private String color;
+
+    private String currentEmail; // 인증(로그인된) 이메일
 
     public CategoryEntity toEntity() {
         return CategoryEntity.builder()

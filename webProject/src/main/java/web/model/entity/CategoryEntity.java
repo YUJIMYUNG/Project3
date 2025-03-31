@@ -24,6 +24,8 @@ public class CategoryEntity extends BaseTime{
     @Column(columnDefinition = "varchar(100)", nullable = false, unique = true)
     private String color; // 카테고리 색상
 
+    private String currentEmail; // 인증(로그인된) 이메일
+
     public CategoryDto toDto() {
         return CategoryDto.builder()
                 .cindex(this.cindex)
