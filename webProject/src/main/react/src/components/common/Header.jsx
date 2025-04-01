@@ -28,6 +28,8 @@ const Header = (props) => {
                 <li><Link to="/"> MAIN </Link></li>
                 <li><Link to="/auth/signup"> SIGN UP </Link></li>
                 <li><Link to="/auth/login"> LOGIN </Link></li>
+                <li><Link to="/category/register"> 학습 카테고리 </Link></li>
+                
             </ul>
         </div>
     );

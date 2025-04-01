@@ -17,10 +17,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/regist.do")
-    public ResponseEntity<?> registCategory(@RequestBody CategoryDto registCategory) {
+    @PostMapping("/register.do")
+    public ResponseEntity<?> registerCategory(@RequestBody CategoryDto registerCategory) {
         try{
-            boolean result = CategoryService.registCategory(registCategory);
+            boolean result = categoryService.registerCategory(registerCategory);
             if(result) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(result);
             } else {
@@ -36,7 +36,7 @@ public class CategoryController {
     @GetMapping("/findAll.do")
     public ResponseEntity<?> findAllCategory() {
         try{
-            List<CategoryDto> result = CategoryService.findAllCategory();
+            List<CategoryDto> result = categoryService.findAllCategory();
             if(result == null) {// category 리스트가 없고
                 // 로그인 정보도 없으면
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Find All Category : Please Login");

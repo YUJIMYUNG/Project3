@@ -12,6 +12,7 @@ import web.model.entity.UserEntity;
 import web.repository.CategoryRepository;
 import web.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,32 +29,53 @@ public class CategoryService {
 
     // 1. 카테고리 등록
     @Transactional
-    public boolean registCategory(CategoryDto registCategory){
+    public boolean registerCategory(CategoryDto registerCategory){
+        // 1. 사용자로부터 전달받은 categorydto를 엔티티로 변환
+        CategoryEntity categoryEntity = registerCategory.toEntity();
 
-        // 1. 로그인(인증)된 사용자의 엔티티 가져오기
+        // 2. 로그인(인증)된 사용자의 엔티티 가져오기
         UserEntity currentUser = userService.getCurrentUser();
 
-        // 2. 로그인 상태가 아니면 카테고리 등록 실패
+        // 3. 로그인 상태가 아니면 카테고리 등록 실패
         if(currentUser == null) {
             return false;
         }// if end
 
-        // 3. categoryDto를 엔티티로 변환
-        CategoryEntity categoryEntity = registCategory.toEntity();
+        // 4. 로그인된 상태이면 회원 이메일 조회
+        String loginUser = currentUser.getEmail();
 
-        // 4. 카테고리 소유자를 현재 로그인 사용자로 설정
-        categoryEntity.setCurrentEmail(currentUser);
+        // 5. 로그인된 회원 엔티티를 카테고리 엔티티에 대입
+        UserEntity loginEntity = userRepository.findByEmail(loginUser);
+        categoryEntity.setUserEntity(loginEntity);
 
-        // 5. 엔티티 저장
+        // 6. 엔티티 저장
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
 
-        // 5. 카티고리 등록 여부에 따라 결과 반환
-        return savedCategory.getCindex() != null && savedCategory.getCindex() > 0;
-
-    }
+        // 7. 카티고리 등록 여부에 따라 결과 반환
+       if(savedCategory.getCindex() > 0 ) {
+           return true;
+       } else {
+           return false;
+       } // if-else end
+    } // registerCategory end
 
     // 2. 카테고리 목록 전체 조회
     public List<CategoryDto> findAllCategory() {
+        // 1. 로그인 된 유저 정보 가져오기
+        UserEntity currentUser = userService.getCurrentUser();
+
+        // 2. 로그인한 유저의 카테고리 조회 리스트
+        List<CategoryEntity> categoryEntityList;
+        categoryEntityList = categoryRepository.findByUserEntity(currentUser);
+
+        // 3. 조회된 회원의 카테고리 엔티티를 dto로 변환
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        categoryEntityList.forEach( entity -> {
+            CategoryDto categoryDto = entity.toDto();
+            categoryDtoList.add(categoryDto);
+                });
+
+        return categoryDtoList;
 
     }
 

@@ -4,7 +4,8 @@ import Signup from '../auth/Signup';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Main from '../common/Main';
-import Login from '../common/Login';
+import RegisterCategory from '../category/RegisterCategory';
+import Login from '../auth/Login';
 
 
 
@@ -31,6 +32,7 @@ export default function Index(props){
                             <Route path="/" element = { <Main />} />
                             <Route path="/auth/signup" element = { <Signup />} />
                             <Route path="/auth/login" element = { <Login />} />
+                            <Route path="/category/register" element = { <RegisterCategory />} />
                         </Routes>
 
                         <Footer />
