@@ -4,6 +4,7 @@ import axios from "axios";
 const api = axios.create({
     baseURL: 'http://localhost:8080',
     timeout: 10000, // 요청 타임아웃 설정
+    withCredentials: true, // 모든 요청에 인증 정보 포함
     headers: {
       'Content-Type': 'application/json'
     }

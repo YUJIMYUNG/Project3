@@ -9,7 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import web.service.UserService;
+
+import java.util.Arrays;
 
 @Configuration // 스프링 컨테이너의 빈 등록
 public class SecurityConfig {
@@ -65,7 +70,8 @@ public class SecurityConfig {
                             response.getWriter().println("true");           //JSON 형식의 true 응답
                         })
                         .failureHandler((request, response, exception) -> {
-                            System.out.println("로그인 실패!!!");
+                            System.out.println("로그인 실패!!! : " + exception.getMessage() );
+                            exception.printStackTrace(); // 스택 트레이스 출력
                             response.setContentType("application/json");
                             response.getWriter().println("false");
                         })
@@ -94,6 +100,10 @@ public class SecurityConfig {
                     });
         });
 
+        // cors 설정
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         // 2. http 객체를 빌드/실행하여 보안 필터 체인을 생성
         return http.build();
     }
@@ -104,6 +114,20 @@ public class SecurityConfig {
     @Bean // 스프링 컨테이너에 메소드 등록, 암호화해서 사용된 클래스를 그대로 정의한다./ PasswordEncoder : 시큐리티가 로그인할 때 사용할 암호화 인코딩 객체
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 

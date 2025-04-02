@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import api from '../api/axios';
 
 const Login = (props) => {
 
@@ -17,7 +17,7 @@ const Login = (props) => {
             password : password
         }
 
-        axios.post("/auth/login.do", info)
+        api.post("/auth/login.do", info)
             .then(response => {console.log(response)
                 if(response.data){
                     alert('로그인 성공')

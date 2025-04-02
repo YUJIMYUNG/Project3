@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import web.model.dto.AuthDto;
 import web.model.dto.UserDto;
 import web.service.UserService;
 
@@ -17,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // 1. 회원가입
+    // 1. (Oauth2 X) 일반 회원가입
     @PostMapping("/signup.do")
     public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto){
         try{
@@ -36,7 +37,21 @@ public class UserController {
 
     // 2. 로그인은 SecurityConfig에서 설정
 
-    // 3. 이메일 중복검사
+    // 3. 로그인 정보 가져오기
+    @GetMapping("/info/get.do")
+    public ResponseEntity<?> getLoginInfo (){
+        try{
+            UserDto result = userService.getLoginInfo();
+            if(result != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(result);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("GetLoginInfo status bad");
+            } // if-else end
+        } catch (Exception e) {
+            log.error("GetLoginInfo  Error : ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GetLoginInfo Server Error");
+        } // try-catch end
+    }
 
 
 
@@ -73,6 +88,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Checked Nickname Server Error");
         } // try-catch end
     }// chekedEmail end
+
+
 
 
 

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -34,6 +35,9 @@ import java.util.Map;
 public class UserService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Autowired
     private UserRepository userRepository;
+//    // SecurityConfig에서 정의한 빈 주입
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     // 1. 회원가입
     @Transactional
@@ -54,18 +58,21 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
     //  - loadUserByUsername 재정의
     @Override
     public UserDetails loadUserByUsername(String loginid) throws UsernameNotFoundException {
-        System.out.println("loginid" + loginid);
+        System.out.println("loginid : " + loginid);
         System.out.println("UserService.loadUserByUsername");
 
         // 1. loginid를 이용하여 데이터베이스에 저장된 암호화 패스와드 가져오기
         UserEntity userEntity = userRepository.findByEmail(loginid);
         if (userEntity == null) { // 입력받은 아이디(이메일)의 엔티티가 없으면
+            System.out.println("사용자를 찾을 수 없음" + loginid);
             throw new UsernameNotFoundException("존재하지 않는 아이디입니다.");
         } // if end
 
+        System.out.println("사용차를 찾음 : " + userEntity.getEmail());
+
         // 2. 입력받은 아이디(이메일)의 엔티티가 존재하면 암호화된 패스워드 확인
         String password = userEntity.getPassword();
-        System.out.println("password" + password);
+        System.out.println("password : " + password);
 
         // 3. 권한 부여
         // SimpleCratedAuthority : 시큐리티 사용자의 권한 클래스(구현체)
@@ -74,10 +81,13 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
 
         // 4. 권한목록을 넣어줌
         AuthDto authDto = AuthDto.builder()
-                .loginid(loginid)
-                .loginpwd(password)
+                .email(loginid)
+                .password(password)
                 .loginList(authorityList)
                 .build();
+
+
+        System.out.println("AuthDto 생성 확인 : " + authDto);
 
         return authDto;
     } // loadByUsername o end
@@ -128,12 +138,37 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
         authority.add(new SimpleGrantedAuthority("ROLE_OAUTH"));
 
         AuthDto authDto = AuthDto.builder()
-                .loginid(nickname)
+                .email(nickname)
                 .loginList(authority)
                 .build();
         return authDto;
     } // loeadUser o end
 
+
+    // 3. 로그인 유저 조회
+    public UserDto getLoginInfo() {
+        // 1. principal(본인/주역/주체자) 객체 설정
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("object : " + object);
+
+        // 2. 만약에 로그인 상태가 아니면
+        if( object.equals("anonymousUser")) { // anonymousUser : 익명(비로그인상태)
+            return null;
+        }
+
+        // 3. 로그인 상태이면 UserDetails 타입으로 변환
+        UserDetails userDetails = (UserDetails) object;
+
+        // 4. 로그인 성공한 엔티티 찾기
+        UserEntity userEntity = userRepository.findByEmail(userDetails.getUsername());
+
+        // 5. 회원정보 반환
+        return UserDto.builder()
+                .email(userEntity.getEmail())
+                .nickname(userEntity.getNickname())
+                .uindex(userEntity.getUindex())
+                .build();
+    }
 
     // 4. 이메일 중복 검사
     public boolean checkedEmail(String email) {
@@ -161,7 +196,7 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
         // 2-1.AuthDto 타입인 경우
         if (authentication.getPrincipal() instanceof AuthDto) {
             AuthDto authDto = (AuthDto) authentication.getPrincipal();
-            userEmail = authDto.getLoginid();
+            userEmail = authDto.getEmail();
             // 2-2. Oauth2User 타입인 경우
         } else if (authentication.getPrincipal() instanceof OAuth2User) {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -204,4 +239,6 @@ public class UserService implements UserDetailsService, OAuth2UserService<OAuth2
                 .nickname(userEntity.getNickname())
                 .build();
     }
+
+
 }

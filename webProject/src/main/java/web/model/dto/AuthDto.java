@@ -22,8 +22,8 @@ public class AuthDto implements UserDetails, OAuth2User {
 
 
     // + 필수
-    private String loginid; // 로그인한 회원 아이디
-    private String loginpwd; // 로그인할 회원의 비번(oauth2 회원은 미사용)
+    private String email; // 로그인한 회원 아이디
+    private String password; // 로그인할 회원의 비번(oauth2 회원은 미사용)
     private List<GrantedAuthority> loginList; // 로그인한 회원의 권한/등급 목록
 
 
@@ -31,27 +31,31 @@ public class AuthDto implements UserDetails, OAuth2User {
     // UserDetails, OAuth2User 추상클래스의 메서드 재정의
     @Override
     public String getName() {
-        return this.loginid;
+        return this.email;
     }
 
+    // 계정이 만료되지 않음
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
+    // 계정이 잠기지 않음
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
+    // 자격 증명이 만료되지 않았음
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
+    // 계정이 활성화 됨
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 
     @Override
@@ -61,12 +65,12 @@ public class AuthDto implements UserDetails, OAuth2User {
 
     @Override
     public String getPassword() {
-        return this.loginpwd;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.loginid;
+        return this.email;
     }
 
     @Override
