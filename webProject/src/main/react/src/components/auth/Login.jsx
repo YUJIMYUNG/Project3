@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import api from '../api/axios';
+import FormField from '../../molecules/FormField';
+import Button from '../atoms/Button';
 
 const Login = (props) => {
 
@@ -30,23 +32,17 @@ const Login = (props) => {
     }
 
     return (
-        <div>
-            <form>
-                <div>
-                    이메일 : <input type="text" value={email} />
-                </div>
-                <div>
-                    비밀번호 : <input type="password" value={password} />
-                </div>
+        <div className='login-container'>
+            <form className='login-form'>
+                <FormField  label="이메일" type="text" value={email} onChange={(e) => setEmail(e.target.value)} id="email" />
+                <FormField  label="비밀번호" type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" />
+                
+                <Button onClick={onLogin} className="login-buttin">로그인</Button>
 
-                <div>
-                    <button type="button" onClick={onLogin}>로그인</button>
-                </div>
-
-                <div>
+                <div className='social-login'>
                     <p>소셜 로그인</p>
-                    <button type='button'>네이버 로그인</button>
-                    <button type='button'>카카오 로그인</button>
+                    <Button className="naver-button">네이버 로그인</Button>
+                    <Button className="kakao-button">카카오 로그인</Button>
                 </div>
             </form>
         </div>
