@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import api from '../api/axios';
 import DuplicationCheckField from '../../molecules/DuplicationCheckField';
 import FormField from '../../molecules/FormField';
 import Button from '../atoms/Button';
+import api from '../../api/axios';
 
 const Signup = (props) => {
 
@@ -207,57 +207,82 @@ const Signup = (props) => {
     }
 
     return (
-        <div className='signup-container'>
-            <form className='signup-form'>
-                {/* 이메일 작성 필드 */}
-                <DuplicationCheckField 
-                    label="이메일"
-                    value={email}
-                    onChange={onChangeEmail}
-                    onCheck={checkEmailDuplication}
-                    errorMessage={emailError}
-                    type="text"
-                    placeholder="이메일을 입력하세요"
-                />
-
-                <Button className='verification-button'>인증번호 발송하기</Button>
-
-                {/* 비밀번호 작성 필드 */}
-                <FormField 
-                    label="비밀번호"
-                    type="password"
-                    value={password}
-                    onChange={onChangePassword}
-                    id="password"
-                    placeholder="비밀번호를 입력하세요"
-                />
-
-                {/* 비밀번호 확인 필드 */}
-                <FormField 
-                    label="비밀번호 확인"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={onChangeComfirmPassword}
-                    id="confirmPassword"
-                    placeholder="비밀번호를 한번 더 입력하세요"
-                    errorMessage={confirmPasswordError}
-                />
-
-                {/* 닉네임 작성 필드 */}
-                <DuplicationCheckField
-                    label="닉네임"
-                    value={nickname}
-                    onChange={onChangeNickname}
-                    onCheck={checkNicknameDuplication}
-                    errorMessage={nicknameError}
-                    type="text"
-                    placeholder="닉네임을 입력하세요"
-                />
-
-                <Button onClick={onSignup} className='signup-button' disabled = {!isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isNicknameValid}>회원가입</Button>
+        <div  className="container flex justify-center items-center min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div  className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+                <div className="text-center">
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900">회원가입</h2>
+                </div>
             
 
-            </form>
+                <form onSubmit={onSignup} className="mt-8 space-y-6">
+                    {/* 이메일 작성 필드 */}
+                    <DuplicationCheckField 
+                        label="이메일"
+                        value={email}
+                        onChange={onChangeEmail}
+                        onCheck={checkEmailDuplication}
+                        errorMessage={emailError}
+                        type="text"
+                        placeholder="이메일을 입력하세요"
+                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    />
+
+                    <Button 
+                        className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            인증번호 발송하기</Button>
+
+                    {/* 비밀번호 작성 필드 */}
+                    <FormField 
+                        label="비밀번호"
+                        type="password"
+                        value={password}
+                        onChange={onChangePassword}
+                        id="password"
+                        placeholder="비밀번호를 입력하세요"
+                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    />
+
+                    {/* 비밀번호 확인 필드 */}
+                    <FormField 
+                        label="비밀번호 확인"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={onChangeComfirmPassword}
+                        id="confirmPassword"
+                        placeholder="비밀번호를 한번 더 입력하세요"
+                        errorMessage={confirmPasswordError}
+                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    />
+
+                    {/* 닉네임 작성 필드 */}
+                    <DuplicationCheckField
+                        label="닉네임"
+                        value={nickname}
+                        onChange={onChangeNickname}
+                        onCheck={checkNicknameDuplication}
+                        errorMessage={nicknameError}
+                        type="text"
+                        placeholder="닉네임을 입력하세요"
+                        className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    />
+
+                    <Button 
+                        type={submit}
+                        className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white ${!isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isNicknameValid 
+                            ? 'bg-gray-400 cursor-not-allowed' 
+                            : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}
+                        disabled = {!isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isNicknameValid}
+                        >
+                            회원가입</Button>
+                
+
+                </form>
+
+                <p className="mt-2 text-sm text-gray-600"> 이미 계정이 있으신가요?
+                    <a href="/auth/login" className="font-medium text-indigo-600 hover:text-indigo-500 ml-1">로그인</a>
+                </p>
+            </div>
         </div>
     );
 };

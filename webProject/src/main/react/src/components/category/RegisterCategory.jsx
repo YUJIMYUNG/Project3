@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import api from '../api/axios';
+import api from '../../api/axios';
 
 const RegisterCategory = () => {
     // 1. useState

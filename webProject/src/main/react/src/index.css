@@ -1,68 +1,115 @@
+/* 기존 Tailwind 지시어 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 폰트 설정 */
+@font-face {
+  font-family: 'MangoDdobak-B';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* 기본 HTML 요소 표준 설정 */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* 표준 너비 */
+  --desktop-width: 1200px;
+  --tablet-width: 768px;
+  --mobile-width: 375px;
+  
+  /* 색상 변수 */
+  --primary-color: #4f46e5;  /* indigo-600 */
+  --secondary-color: #818cf8; /* indigo-400 */
+  --text-primary: #1f2937;  /* gray-800 */
+  --text-secondary: #6b7280; /* gray-500 */
+  --background-light: #f9fafb; /* gray-50 */
+  --background-white: #ffffff;
+  --error-color: #ef4444; /* red-500 */
+  --success-color: #10b981; /* emerald-500 */
+  
+  /* 기본 폰트 사이즈 (1rem = 16px) */
+  font-size: 16px;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* 폰트 패밀리 적용 */
+* {
+  font-family: 'MangoDdobak-B';
+  box-sizing: border-box;
 }
 
-body {
+/* 기본 문서 설정 */
+html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--background-light);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* 표준 컨테이너 너비 */
+.container {
+  width: 100%;
+  max-width: var(--desktop-width);
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--desktop-width); /* 1200px */
+  }
+}
+
+
+/* 접근성 및 사용자 경험 향상을 위한 포커스 스타일 */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* 폼 요소 표준화 */
+input,
+select,
+textarea,
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-size: 1rem;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* 접근성을 위한 스크린 리더용 클래스 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
