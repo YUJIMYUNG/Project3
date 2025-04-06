@@ -12,7 +12,7 @@ import web.model.dto.RecordDto;
 @Getter
 @Setter
 @Table(name = "record")
-public class RecordEntity {
+public class RecordEntity extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +26,23 @@ public class RecordEntity {
     private String content; // 공부기록 내용
 
     @Column(columnDefinition = "int", nullable = false)
-    private String duration; // 공부시간(분단위)
+    private int duration; // 공부시간(분단위)
 
     // 작성자번호(FK)
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mno")
     private UserEntity userEntity;
 
+    @ManyToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "cno")
+    private  CategoryEntity categoryEntity;
+
     public RecordDto toDto() {
         return RecordDto.builder()
                 .rindex(this.rindex)
                 .title(this.title)
                 .duration(this.duration)
+                .registedate(this.getCreatedate().toString())
                 .build();
     }
 

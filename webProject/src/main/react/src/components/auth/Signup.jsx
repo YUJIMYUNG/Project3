@@ -3,6 +3,7 @@ import DuplicationCheckField from '../../molecules/DuplicationCheckField';
 import FormField from '../../molecules/FormField';
 import Button from '../atoms/Button';
 import api from '../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = (props) => {
 
@@ -21,6 +22,9 @@ const Signup = (props) => {
     const [passwordError, setPasswordError] = useState(''); //비밀번호 에러 상태
     const [confirmPasswordError, setConfirmPasswordError] = useState(''); //비밀번호 확인 에러 상태
     const [nicknameError, setNicknameError] = useState('') // 닉네임 에러 상태
+
+    // useNavigate
+    const navigate = useNavigate(); 
     
     // 2. 입력되는 정보 수정 및 유효성 검사 함수
     const onChangeEmail = (e) => {
@@ -47,12 +51,16 @@ const Signup = (props) => {
         setPassword(newPassword);
 
         // 비밀번호 정규식 검사
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
+        console.log('입력된 비밀번호:', newPassword);
+        console.log('정규식 테스트 결과:', passwordRegex.test(newPassword));
+
         if(!newPassword) { // 비밀번호 입력칸이 비어있을 경우
             setPasswordError('비밀번호를 입력해주세요');
             setIsPasswordValid(false);
         } else if( !passwordRegex.test(newPassword)) { //비밀번호 유효성 검증 안된 경우
-            setPasswordError('비밀번호는 8자 이상, 문자, 숫자, 특수문자(@$!%*?&)를 포함해야 합니다.');
+            setPasswordError('비밀번호는 8자 이상 20자 이하, 문자, 숫자, 특수문자(@$!%*?&)를 포함해야 합니다.');
             setIsPasswordValid(false);
         } else {
             setPasswordError('');
@@ -112,6 +120,12 @@ const Signup = (props) => {
         console.log(nickname);
 
         // 1. 입력값 검증, 유효성검사
+        console.log('이메일 유효성:', isEmailValid);
+        console.log('비밀번호 유효성:', isPasswordValid);
+        console.log('닉네임 유효성:', isNicknameValid);
+        console.log('비밀번호 확인 유효성:', isConfirmPasswordValid);
+
+
         if(!isEmailValid || !isPasswordValid || !isNicknameValid || !isConfirmPasswordValid) {
             alert('모든 필드를 올바르게 입력해주세요');
             return;
@@ -123,16 +137,31 @@ const Signup = (props) => {
             nickname : nickname
         }
 
-        api.post("/auth/signup.do", info)
-            .then(response => {console.log(response)
-                if(response.data) {
+        api.post("/auth/signup.do", info, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                console.log(response);
+                console.log('응답 데이터' , response.data);
+                console.log('응답 상태',response.status);
+
+                if(response.status === 201 && response.data === true) {
                     alert('회원가입 성공')
-                    window.location.href = "/auth/login";
+                    navigate('/auth/login', {replace :true});
                 } else {
                     alert('회원가입 실패')
                 } // if-else end
             })
-            .catch(error => {console.log(error);})
+            .catch(error => {
+                console.error('회원가입 에러' , error)
+                if(error.respose) {
+                    console.error('에러 응답 데이터', error.response.data);
+                    console.error('에러상태 코드', error.response.status);
+                }
+            })
 
     }
 
@@ -268,7 +297,7 @@ const Signup = (props) => {
                     />
 
                     <Button 
-                        type={submit}
+                        type='submit'
                         className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white ${!isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isNicknameValid 
                             ? 'bg-gray-400 cursor-not-allowed' 
                             : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}

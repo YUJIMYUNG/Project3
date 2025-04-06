@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import '../../index.css';
 import api from '../../api/axios';
-import { LoginInfoContext } from "../record/Index";
+import { LoginInfoContext } from "../../App";
 
 const Header = (props) => {
 
@@ -50,17 +50,19 @@ const Header = (props) => {
                     </Link>
                     
                     <nav className="flex items-center gap-4">
-                        <Link to="/" className="text-white hover:bg-indigo-500 px-3 py-2 rounded transition-colors duration-200">
-                            MAIN
-                        </Link>
-                        
-                        <Link to="/category/register" className="text-white hover:bg-indigo-500 px-3 py-2 rounded transition-colors duration-200">
-                            학습 카테고리
-                        </Link>
-                        
                         {!isLoading ? (
                             loginInfo ? (
                                 <div className="flex items-center gap-3">
+                                     <Link to="/" className="text-white hover:bg-indigo-500 px-3 py-2 rounded transition-colors duration-200">
+                                        MAIN
+                                    </Link>
+                                    
+                                    <Link to="/category/register" className="text-white hover:bg-indigo-500 px-3 py-2 rounded transition-colors duration-200">
+                                        학습 카테고리
+                                    </Link>
+                                    <Link to="/record" className="text-white hover:bg-indigo-500 px-3 py-2 rounded transition-colors duration-200">
+                                        학습 기록하기
+                                    </Link>
                                     <span className="text-white">
                                         {loginInfo.nickname} 님 안녕하세요
                                     </span>

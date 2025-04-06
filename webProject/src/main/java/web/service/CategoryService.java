@@ -41,17 +41,24 @@ public class CategoryService {
             return false;
         }// if end
 
-        // 4. 로그인된 상태이면 회원 이메일 조회
+        // 4. 해당 사용자의 카테고리 중 동일한 이름, 색상의 카테고리가 있는지 확인
+        if(categoryRepository.existsByNameAndUserEntity(categoryEntity.getName(), currentUser) &&
+                categoryRepository.existsByColorAndUserEntity(categoryEntity.getColor(), currentUser)){
+            System.out.println("카테고리 이름,색상 중복 확인");
+            return false;
+        }
+
+        // 5. 로그인된 상태이면 회원 이메일 조회
         String loginUser = currentUser.getEmail();
 
-        // 5. 로그인된 회원 엔티티를 카테고리 엔티티에 대입
+        // 6. 로그인된 회원 엔티티를 카테고리 엔티티에 대입
         UserEntity loginEntity = userRepository.findByEmail(loginUser);
         categoryEntity.setUserEntity(loginEntity);
 
-        // 6. 엔티티 저장
+        // 7. 엔티티 저장
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
 
-        // 7. 카티고리 등록 여부에 따라 결과 반환
+        // 8. 카티고리 등록 여부에 따라 결과 반환
        if(savedCategory.getCindex() > 0 ) {
            return true;
        } else {

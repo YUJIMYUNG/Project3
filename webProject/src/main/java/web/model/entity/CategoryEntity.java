@@ -18,10 +18,10 @@ public class CategoryEntity extends BaseTime{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cindex; // 카테고리 번호
 
-    @Column(columnDefinition = "varchar(100)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(100)", nullable = false)
     private String name; // 카테고리 이름
 
-    @Column(columnDefinition = "varchar(100)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(100)", nullable = false)
     private String color; // 카테고리 색상
 
     @ManyToOne

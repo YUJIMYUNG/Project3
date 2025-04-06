@@ -1,9 +1,21 @@
-import { useEffect, useState } from 'react'
-import Index from './components/record/Index';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
+import RegisterCategory from './components/category/RegisterCategory';
+import Footer from './components/common/Footer';
+import Header from './components/common/Header';
+import Main from './components/common/Main';
+import Record from './components/record/Record';
+
+// 컨텍스트 만들기
+
+export const LoginInfoContext = React.createContext('');
+
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [data, setData] = useState(null)  // data 상태 추가
+  const [data, setData] = useState(null)  // data 상태 (백앤드 통신)
+  const [loginInfo, setLoginInfo] = useState(null); // logininfo 상태
 
   // back(자바)와 통신하는 함수
  const fetchDataFromJava = async () => {
@@ -23,13 +35,27 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h3>자바통신확인</h3>
-      {data && <p>서버 응답: {JSON.stringify(data)}</p>}
-      <button onClick={fetchDataFromJava}>데이터 다시 가져오기</button>
-      <Index />
-      
-    </>
+    <LoginInfoContext.Provider value={{loginInfo, setLoginInfo}}>
+      <div className="container">
+
+        <Header />
+
+        <Routes>
+          {/* <h3>자바통신확인</h3>
+          {data && <p>서버 응답: {JSON.stringify(data)}</p>}
+          <button onClick={fetchDataFromJava}>데이터 다시 가져오기</button> */}
+            <Route path="/" element={ <Main />}/>
+            <Route path="/auth/login" element={ <Login />}/>
+            <Route path="/auth/signup" element={ <Signup />}/>
+            <Route path="/category/register" element = { <RegisterCategory />} />
+            <Route path="/record" element = { <Record />} />
+        </Routes>
+
+        <Footer />
+      </div>
+
+    </LoginInfoContext.Provider>
+    
   )
 }
 
