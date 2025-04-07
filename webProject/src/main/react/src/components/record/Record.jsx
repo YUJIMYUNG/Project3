@@ -13,6 +13,7 @@ const Record = () => {
     const [title, setTitle] = useState(''); // 
     const [content, setContent] = useState('');
     const [duration, setDuration] = useState('');
+    const [registedate, setRegistdate] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [record, setRecord] = useState([]);
     const [errors, setErrors] = useState({
@@ -48,7 +49,7 @@ const Record = () => {
         api.get("/record/findAll.do")
             .then(response => {
                 console.log('학습기록 응답 : ', response);
-                const recordData = response.date || [];
+                const recordData = response.data || [];
                 setRecord(recordData);
             })
             .catch(error => {
@@ -135,8 +136,10 @@ const Record = () => {
             title: title,
             content: content,
             duration: Number(duration),
-            rindex: Number(selectedCategory) // rindex는 백엔드에서 카테고리 인덱스를 받는 필드
+            cindex: Number(selectedCategory) // cindex는 백엔드에서 카테고리 인덱스를 받는 필드
         };
+
+        console.log("학습기록 입력 데이터",recordData)
 
         api.post('/record/register.do', recordData)
             .then(response => {
@@ -166,10 +169,10 @@ const Record = () => {
     };
 
     // 날짜 포맷팅 함사ㅜ
-    const formatData = (dateString) => {
-        if(!dateString) return '';
-        const data = new Date(dateString);
-        return date.toLocaleString();
+    const formatData = (registedate) => {
+        if(!registedate) return '';
+        const data = new Date(registedate);
+        return data.toLocaleString();
     }
 
     return (
@@ -300,7 +303,7 @@ const Record = () => {
                                                 {record.duration}분
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {formatData(record.createdate)}
+                                                {formatData(record.registedate)}
                                             </td>
                                         </tr>
                                     ))}

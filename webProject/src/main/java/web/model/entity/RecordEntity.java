@@ -43,6 +43,8 @@ public class RecordEntity extends BaseTime{
                 .title(this.title)
                 .duration(this.duration)
                 .registedate(this.getCreatedate().toString())
+                .content(this.content)
+                .cindex(this.categoryEntity.getCindex())
                 .build();
     }
 

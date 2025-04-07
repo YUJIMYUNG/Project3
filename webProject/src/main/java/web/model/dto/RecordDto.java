@@ -24,12 +24,15 @@ public class RecordDto {
 
     private String registedate; // 공부기록 등록한 시간
 
+    private int cindex; // 학습기록의 카테고리번호
+
 
     public RecordEntity toEntity() {
         return RecordEntity.builder()
                 .rindex(this.rindex)
                 .title(this.title)
                 .duration(this.duration)
+                .content(this.content)
                 .build();
     }
 

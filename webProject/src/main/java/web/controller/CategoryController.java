@@ -1,5 +1,6 @@
 package web.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/register.do")
-    public ResponseEntity<?> registerCategory(@RequestBody CategoryDto registerCategory) {
+    public ResponseEntity<?> registerCategory(@Valid  @RequestBody CategoryDto registerCategory) {
         try{
             boolean result = categoryService.registerCategory(registerCategory);
             if(result) {
