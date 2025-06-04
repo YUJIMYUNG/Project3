@@ -3,6 +3,7 @@ package web.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import web.model.dto.RecordDto;
+import web.model.dto.RecordResponseDto;
 
 @Builder
 @ToString
@@ -45,6 +46,18 @@ public class RecordEntity extends BaseTime{
                 .registedate(this.getCreatedate().toString())
                 .content(this.content)
                 .cindex(this.categoryEntity.getCindex())
+                .build();
+    }
+
+    public RecordResponseDto toResponseDto() {
+        return RecordResponseDto.builder()
+                .rindex(this.rindex)
+                .title(this.title)
+                .content(this.content)
+                .duration(this.duration)
+                .registedate(this.getCreatedate().toString())
+                .cname(this.getCategoryEntity().getName())
+                .ccolor(this.getCategoryEntity().getColor())
                 .build();
     }
 

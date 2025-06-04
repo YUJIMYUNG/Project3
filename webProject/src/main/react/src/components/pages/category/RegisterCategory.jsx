@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import api from '../../api/axios';
-import FormField from '../../molecules/FormField';
-import Button from '../atoms/Button';
+import api from '../../../api/axios';
+import FormField from '../../../molecules/FormField';
+import Button from '../../atoms/Button';
 
 const RegisterCategory = () => {
     // 1. useState

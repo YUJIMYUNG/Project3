@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
-import RegisterCategory from './components/category/RegisterCategory';
 import Footer from './components/common/Footer';
 import Header from './components/common/Header';
 import Main from './components/common/Main';
-import Record from './components/record/Record';
+import RegisterCategory from './components/pages/category/RegisterCategory';
+import RecordPage from './components/pages/record/RecordPage';
+import Login from './components/pages/auth/Login';
+import Signup from './components/pages/auth/Signup';
+
 
 // 컨텍스트 만들기
 
@@ -48,7 +49,7 @@ function App() {
             <Route path="/auth/login" element={ <Login />}/>
             <Route path="/auth/signup" element={ <Signup />}/>
             <Route path="/category/register" element = { <RegisterCategory />} />
-            <Route path="/record" element = { <Record />} />
+            <Route path="/record" element = { <RecordPage />} />
         </Routes>
 
         <Footer />

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.dto.RecordDto;
+import web.model.dto.RecordResponseDto;
 import web.model.dto.UserDto;
 import web.model.entity.CategoryEntity;
 import web.model.entity.RecordEntity;
@@ -70,7 +71,7 @@ public class RecordService {
     } // registerRecord end
 
     // 2. 모든 학습 기록 조회
-    public List<RecordDto> getRecordList() {
+    public List<RecordResponseDto> getRecordList() {
         // 1. 로그인 유저 정보 가져오기
         UserEntity loginUser = userService.getCurrentUser();
         UserEntity userEntity = userRepository.findByEmail(loginUser.getEmail());
@@ -79,9 +80,9 @@ public class RecordService {
         List<RecordEntity> recordEntityList = recordRepository.findByUserEntity(userEntity);
 
         // 3. 조회된 회원의 학습기록 엔티티를 Dto로 변환
-        List<RecordDto> recordDtoList = new ArrayList<>();
+        List<RecordResponseDto> recordDtoList = new ArrayList<>();
         recordEntityList.forEach( entity -> {
-            RecordDto recordDto = entity.toDto();
+            RecordResponseDto recordDto = entity.toResponseDto();
             recordDtoList.add(recordDto);
         });
         return recordDtoList;

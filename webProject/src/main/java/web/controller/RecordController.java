@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.dto.RecordDto;
+import web.model.dto.RecordResponseDto;
 import web.service.RecordService;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class RecordController {
     @GetMapping("/findAll.do")
     public ResponseEntity<?> getRecordList() {
         try{
-            List<RecordDto> result = recordService.getRecordList();
+            List<RecordResponseDto> result = recordService.getRecordList();
             if(result != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(result);
             } else {

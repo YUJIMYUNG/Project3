@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import DuplicationCheckField from '../../molecules/DuplicationCheckField';
-import FormField from '../../molecules/FormField';
-import Button from '../atoms/Button';
-import api from '../../api/axios';
 import { useNavigate } from 'react-router-dom';
+import DuplicationCheckField from '../../../molecules/DuplicationCheckField';
+import FormField from '../../../molecules/FormField';
+import Button from '../../atoms/Button';
+import api from '../../../api/axios';
 
 const Signup = (props) => {
 
